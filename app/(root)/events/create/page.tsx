@@ -7,8 +7,8 @@ async function CreateEvent() {
     if(!user){
         return <h1>Loading.......</h1>
     }
-    const userId = JSON.stringify(user.publicMetadata.userId)
-
+    const userId:any = user.publicMetadata.userId
+    console.log()
   return (
     <>
         <section className='bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5 md:py-10'>
