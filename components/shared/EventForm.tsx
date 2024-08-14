@@ -23,6 +23,9 @@ import { Textarea } from '../ui/textarea';
 import { FileUploader } from './FileUploader';
 import Image from 'next/image';
 import { Checkbox } from '../ui/checkbox';
+import { useUploadThing } from '@/lib/uploadthing';
+import { useRouter } from 'next/navigation';
+import { createEvent } from '@/lib/actions/event.actions';
 interface EventFormProps {
     userId:string;
     type:"Create" | "Update"
@@ -30,17 +33,48 @@ interface EventFormProps {
 }
 
 function EventForm({userId,type}:EventFormProps) {
+    const router = useRouter()
     const [files,setFiles] = useState<File[]>([])
     const initialValues = eventDefaultValues
     const form = useForm<z.infer<typeof eventFormSchema>>({
         resolver: zodResolver(eventFormSchema),
         defaultValues: initialValues,
-      })
+    })
+    const {startUpload} = useUploadThing('imageUploader')
 
-      function onSubmit(values: z.infer<typeof eventFormSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values)
+
+    async function onSubmit(values: z.infer<typeof eventFormSchema>) {
+        const eventData = values;
+
+        let uploadedImageUrl = values.imageUrl
+        if(files.length > 0){
+            const uploadedImages = await startUpload(files)
+
+            if(!uploadedImages){
+                return
+            }
+            uploadedImageUrl = uploadedImages[0].url
+        }
+        console.log(uploadedImageUrl)
+
+        if(type === 'Create'){
+            try {
+                const newEvent = await createEvent({
+                    event:{...values,imageUrl:uploadedImageUrl},
+                    userId,
+                    path:'/profile'
+                })
+
+                if(newEvent){
+                    form.reset()
+                    router.push(`/events/${newEvent._id}`)
+                    
+                }
+            } catch (error) {
+                console.log(error)
+                
+            }
+        }
       }
      
   return (

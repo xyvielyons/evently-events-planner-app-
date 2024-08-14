@@ -7,7 +7,8 @@ async function CreateEvent() {
     if(!user){
         return <h1>Loading.......</h1>
     }
-    
+    const userId = JSON.stringify(user.publicMetadata.userId)
+
   return (
     <>
         <section className='bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5 md:py-10'>
@@ -15,7 +16,7 @@ async function CreateEvent() {
         </section>
 
         <div className="wrapper my-8">
-            <EventForm userId={user.id} type="Create" />
+            <EventForm userId={userId} type="Create" />
         </div>
     </>
     
