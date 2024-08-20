@@ -38,7 +38,7 @@ async function Card({event,hasOrderLink,hidePrice}:CardProps) {
         >
            {!hidePrice && <div className='flex gap-2'>
                 <span className='p-semibold-14 w-min rounded-full bg-green-100 px-4 py-1 text-green-60'>{event.isFree === 'true' ? 'FREE' : `$${event.price}`}</span>
-                <p className='p-semibold-14 w-min rounded-full bg-grey-500/10 px-4 py-1 text-gray-500'>{event.category.name}</p>
+                <p className='p-semibold-14 w-min rounded-full bg-grey-500/10 px-4 py-1 text-gray-500 line-clamp-1'>{event.category.name}</p>
             </div>}
             <p className='p-medium-16 p-medium-18 text-gray-500'>{formatDateTime(event.startDateTime).dateTime}</p>
             <p className='p-medium-16 md:p-medium-20 line-clamp-2 flex-1 text-black'>{event.title}</p>
