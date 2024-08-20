@@ -1,14 +1,15 @@
 'use client'
 import { IEVENT } from '@/lib/database/models/event.model'
 import React from 'react'
-import { SignedIn, SignedOut, useUser } from '@clerk/nextjs'
+import { SignedIn, SignedOut } from '@clerk/nextjs'
 import { Button } from '../ui/button'
 import Link from 'next/link'
+import { useUser } from '@clerk/clerk-react'
 import Checkout from './Checkout'
 function CheckoutButton({event}:{event:IEVENT}) {
     const hasEventFinished = new Date(event.endDateTime) < new Date()
     const {user} = useUser()
-    const userId = user?.publicMetadata.userId as string;
+   const userId = user?.publicMetadata.userId as string
 
   return (
     <div className='flex items-center'>
