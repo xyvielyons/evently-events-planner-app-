@@ -1,8 +1,18 @@
 import EventForm from '@/components/shared/EventForm'
 import React from 'react'
 import { currentUser } from '@clerk/nextjs/server'
-async function UpdateEvent() {
+import { getEventById } from '@/lib/actions/event.actions'
+
+type UpdateEventProps = {
+    params:{
+        id:string
+    }
+}
+async function UpdateEvent({params:{id}}:UpdateEventProps) {
     const user = await currentUser()
+    const userId:any = user?.publicMetadata.userId
+    const event = await getEventById(id)
+    console.log(event)
     
     if(!user){
         return <h1>Loading.......</h1>
@@ -15,7 +25,7 @@ async function UpdateEvent() {
         </section>
 
         <div className="wrapper my-8">
-            <EventForm userId={user.id} type="Update" />
+            <EventForm type="Update" eventId={event._id} event={event} userId={userId}/>
         </div>
     </>
     

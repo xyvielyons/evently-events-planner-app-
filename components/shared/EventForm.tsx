@@ -25,17 +25,20 @@ import Image from 'next/image';
 import { Checkbox } from '../ui/checkbox';
 import { useUploadThing } from '@/lib/uploadthing';
 import { useRouter } from 'next/navigation';
-import { createEvent } from '@/lib/actions/event.actions';
+import { createEvent, updateEvent } from '@/lib/actions/event.actions';
+import Category from '@/lib/database/models/category.model';
 interface EventFormProps {
     userId:string;
     type:"Create" | "Update"
+    event?:string | any
+    eventId?:string
 
 }
 
-function EventForm({userId,type}:EventFormProps) {
+function EventForm({userId,type,event,eventId}:EventFormProps) {
     const router = useRouter()
     const [files,setFiles] = useState<File[]>([])
-    const initialValues = eventDefaultValues
+    const initialValues = event && type === 'Update' ? {...event,startDateTime:new Date(event.startDateTime),endDateTime:new Date(event.endDateTime)}: eventDefaultValues
     const form = useForm<z.infer<typeof eventFormSchema>>({
         resolver: zodResolver(eventFormSchema),
         defaultValues: initialValues,
@@ -68,6 +71,29 @@ function EventForm({userId,type}:EventFormProps) {
                 if(newEvent){
                     form.reset()
                     router.push(`/events/${newEvent._id}`)
+                    
+                }
+            } catch (error) {
+                console.log(error)
+                
+            }
+        }
+        if(type === 'Update'){
+            if(!eventId){
+                router.back()
+                return;
+            }
+
+            try {
+                const updatedEvent = await updateEvent({
+                    event:{...values,imageUrl:uploadedImageUrl,_id:eventId},
+                    userId,
+                    path:`/event/${eventId}`
+                })
+
+                if(updatedEvent){
+                    form.reset()
+                    router.push(`/events/${updatedEvent._id}`)
                     
                 }
             } catch (error) {

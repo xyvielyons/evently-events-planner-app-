@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import {currentUser} from '@clerk/nextjs/server'
+import { DeleteConfirmation } from './DeleteConfirmation'
 type CardProps = {
     event:IEVENT,
     hasOrderLink:boolean,
@@ -27,6 +28,8 @@ async function Card({event,hasOrderLink,hidePrice}:CardProps) {
                 <Link href={`/events/${event._id}/update`}>
                     <Image src="/assets/icons/edit.svg" alt='edit' width={20} height={20}/>
                 </Link>
+
+                <DeleteConfirmation eventId={event._id}/>
             </div>
         )}
         <Link
