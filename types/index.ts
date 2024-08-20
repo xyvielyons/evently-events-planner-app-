@@ -108,7 +108,7 @@ export type CreateUserParams = {
     eventTitle: string
     eventId: string
     price: string
-    isFree: boolean
+    isFree: any
     buyerId: string
   }
   

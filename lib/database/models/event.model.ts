@@ -9,8 +9,8 @@ export interface IEVENT extends Document{
   imageUrl: string;
   startDateTime: Date;
   endDateTime: Date;
-  price: string;
-  isFree: boolean | string;
+  price: string | any;
+  isFree: boolean | string | any;
   url?: string;
   category: { _id: string, name: string }
   organizer: { _id: string, firstName: string, lastName: string }
