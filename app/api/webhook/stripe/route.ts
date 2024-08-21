@@ -24,18 +24,18 @@ export async function POST(request: Request) {
   if (eventType === 'checkout.session.completed') {
     const { id, amount_total, metadata } = event.data.object
     console.log(event.data.object)
-    // const order = {
-    //   stripeId: id,
-    //   eventId: metadata?.eventId || '',
-    //   buyerId: metadata?.buyerId || '',
-    //   totalAmount: amount_total ? (amount_total / 100).toString() : '0',
-    //   createdAt: new Date(),
-    // }
+    const order = {
+      stripeId: id,
+      eventId: metadata?.eventId || '',
+      buyerId: metadata?.buyerId || '',
+      totalAmount: amount_total ? (amount_total / 100).toString() : '0',
+      createdAt: new Date(),
+    }
 
-    // const newOrder = await createOrder(order)
-    // console.log(newOrder)
+    const newOrder = await createOrder(order)
+    console.log(newOrder)
     
-    // return NextResponse.json({ message: 'OK', order: newOrder })
+    return NextResponse.json({ message: 'OK', order: newOrder })
   }
 
   return new Response('', { status: 200 })

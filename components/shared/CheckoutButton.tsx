@@ -11,6 +11,8 @@ function CheckoutButton({event}:{event:IEVENT}) {
     const {user} = useUser()
    const userId = user?.publicMetadata.userId as string
 
+
+
   return (
     <div className='flex items-center'>
         {hasEventFinished ? (
